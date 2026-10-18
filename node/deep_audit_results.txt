@@ -1,0 +1,38 @@
+=== RUN   TestAudit_RedeemRequiresOwnership
+    deep_audit_test.go:127: fresh Bob with no deposits redeemed Alice's 100: Bob HTTP 200 {"claims":0,"floor":0,"payout":100,"reserves":0,"surplus":0}
+        ; Alice HTTP 422 {"error":"redeem: amount 100 exceeds claims 0"}
+--- FAIL: TestAudit_RedeemRequiresOwnership (0.01s)
+=== RUN   TestAudit_ReplayAfterSync
+    deep_audit_test.go:143: same signed request applied twice in B history: HTTP 200 R=200 entries=2 nonce=1
+--- FAIL: TestAudit_ReplayAfterSync (0.00s)
+=== RUN   TestAudit_SyncRejectsUnbackedState
+    deep_audit_test.go:157: unbacked state accepted: HTTP 200 {"adopted":true,"from":"http://audit-peer.invalid","ledger_entries":2,"state":{"claims":1000000,"floor":0,"reserves":0,"surplus":-1000000}}
+         invariant_violations=0 chain_valid=true
+--- FAIL: TestAudit_SyncRejectsUnbackedState (0.00s)
+=== RUN   TestAudit_FailedSyncMustNotPoisonRestart
+    deep_audit_test.go:172: rejected sync committed bad history: HTTP 500 {"error":"replay: invalid character 'n' looking for beginning of object key string"}
+         in-memory R=100 entries=2; restart error=replay: invalid character 'n' looking for beginning of object key string
+--- FAIL: TestAudit_FailedSyncMustNotPoisonRestart (0.00s)
+=== RUN   TestAudit_HonestForkMustNotDiscardAcceptedDeposit
+    deep_audit_test.go:184: equal-length honest branches do not converge: A=100 B=50
+    deep_audit_test.go:188: A's accepted 100 erased by B's longer honest branch; A R=51 entries=2; Alice nonce still=1
+--- FAIL: TestAudit_HonestForkMustNotDiscardAcceptedDeposit (0.01s)
+=== RUN   TestAudit_JournalFailureMustNotApplySameSignatureRepeatedly
+    deep_audit_test.go:222: one signature for 25 applied three times: statuses=500,500,200; durable R=25 C=25 entries=4 nonce=2
+--- FAIL: TestAudit_JournalFailureMustNotApplySameSignatureRepeatedly (0.01s)
+=== RUN   TestAudit_NonceWriteFailureMustNotEnableReplayOnRestart
+    deep_audit_test.go:247: durable redemption replayed after failed nonce save: before replay R=75 after=50 HTTP=200 entries=3
+--- FAIL: TestAudit_NonceWriteFailureMustNotEnableReplayOnRestart (0.00s)
+=== RUN   TestAudit_PeerRequestBodyMustNotHoldGlobalLock
+    deep_audit_test.go:304: one unauthenticated /peers request stalled while reading its body held global mutex and blocked /state until body resumed
+--- FAIL: TestAudit_PeerRequestBodyMustNotHoldGlobalLock (0.05s)
+=== RUN   TestAudit_PeerURLMustNotTargetUnrelatedInternalPath
+    deep_audit_test.go:323: unauthenticated peer registration caused GET /internal-control on loopback; appended /ledger became a fragment
+--- FAIL: TestAudit_PeerURLMustNotTargetUnrelatedInternalPath (0.00s)
+=== RUN   TestAudit_ControlUnsignedRequestRejected
+--- PASS: TestAudit_ControlUnsignedRequestRejected (0.00s)
+=== RUN   TestAudit_ControlOverflowFix
+--- PASS: TestAudit_ControlOverflowFix (0.00s)
+FAIL
+FAIL	github.com/HerodotusTree/grove-network/node	0.103s
+FAIL

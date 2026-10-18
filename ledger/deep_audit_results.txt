@@ -1,0 +1,21 @@
+=== RUN   TestAudit_CompactionCrashWindowMustRecover
+    deep_audit_test.go:37: valid overlapping snapshot/journal after compaction crash rejected: load: journal line 0: index 0, want 1000
+--- FAIL: TestAudit_CompactionCrashWindowMustRecover (0.07s)
+=== RUN   TestAudit_CompletedCorruptTailMustNotBeSilentlyDropped
+    deep_audit_test.go:79: completed corrupt final record silently dropped: recovered=2 of 3; bad bytes retained=true; after appending next entry restart=load: journal line 2 corrupt: invalid character 'i' looking for beginning of object key string
+--- FAIL: TestAudit_CompletedCorruptTailMustNotBeSilentlyDropped (0.00s)
+=== RUN   TestChain
+--- PASS: TestChain (0.00s)
+=== RUN   TestSaveLoadRoundtrip
+--- PASS: TestSaveLoadRoundtrip (0.00s)
+=== RUN   TestTornTailTruncatedOnLoad
+--- PASS: TestTornTailTruncatedOnLoad (0.00s)
+=== RUN   TestTornTailOnlyLine
+--- PASS: TestTornTailOnlyLine (0.00s)
+=== RUN   TestCorruptMiddleJournalRefuses
+--- PASS: TestCorruptMiddleJournalRefuses (0.00s)
+=== RUN   TestLoadMissingChainIsFreshStart
+--- PASS: TestLoadMissingChainIsFreshStart (0.00s)
+FAIL
+FAIL	github.comHerodotusTree/grove-network/ledger	0.089s
+FAIL
